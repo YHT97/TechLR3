@@ -36,9 +36,21 @@ public class Main {
         }
 
 
-        public void add(T element) {
+        public void add(T element , int index) {
             if (pointer == class_array.length - 1) resize(class_array.length * 2);
             class_array[pointer++] = element;
+        }
+        public void add_index(T element,int index){
+            if(index> class_array.length-1) resize(class_array.length+2);
+            Object[] tmp = new Object[class_array.length+1];
+            if (index >= 0) System.arraycopy(class_array, 0, tmp, 0, index);
+            tmp[index]=element;
+            if (class_array.length - index >= 0) {
+                System.arraycopy(class_array, index, tmp, index + 1, class_array.length - index);
+            }
+            resize(tmp.length);
+            class_array=tmp;
+            pointer++;
         }
 
         public void remove(int index) {
@@ -72,9 +84,6 @@ public class Main {
 
     public static void main(String[] args) {
         Node<Data> block = new Node<>();
-        for(int i=0;i<6;i++) {
-            block.add(new Data(getArray(), (int) (Math.random() * 200 - 100), RandString()));
-        }
         for(int i=0;i<block.size();i++) {
 
             System.out.println(Arrays.toString(block.get(i).index));
