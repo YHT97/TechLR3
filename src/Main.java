@@ -1,7 +1,8 @@
+import java.util.Arrays;
+import java.util.Random;
+import java.util.Scanner;
+
 public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello world!");
-    }
 
     static class Data {
         public int[] index;
@@ -15,7 +16,7 @@ public class Main {
         }
     }
 
-    class Node<T> {
+    static class Node<T> {
         private final int INIT_SIZE = 6;
         private Object[] class_array = new Object[INIT_SIZE];
         private int pointer = 0;
@@ -41,9 +42,7 @@ public class Main {
         }
 
         public void remove(int index) {
-            for (int i = index; i < pointer; i++) {
-                class_array[i] = class_array[i + 1];
-            }
+            if (pointer - index >= 0) System.arraycopy(class_array, index + 1, class_array, index, pointer - index);
             class_array[pointer] = null;
             pointer--;
         }
@@ -53,7 +52,35 @@ public class Main {
                 array.remove(i);
             }
         }
+    }
+    static int[] getArray() {
+        int[] array = new int[3];
+        for (int i = 0; i < 3; i++) {
+            array[i] = (int) (Math.random() * 200) - 100;
+        }
+        return array;
+    }
+    public static String RandString(){
+        String alp = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        Random rand = new Random();
+        StringBuilder build = new StringBuilder();
+        for(int i=0;i<10;i++){
+            build.append(alp.charAt(rand.nextInt(alp.length())));
+        }
+        return build.toString();
+    }
 
+    public static void main(String[] args) {
+        Node<Data> block = new Node<>();
+        for(int i=0;i<6;i++) {
+            block.add(new Data(getArray(), (int) (Math.random() * 200 - 100), RandString()));
+        }
+        for(int i=0;i<block.size();i++) {
 
+            System.out.println(Arrays.toString(block.get(i).index));
+            System.out.println(block.get(i).data);
+            System.out.println(block.get(i).str);
+            System.out.println("---------------------");
+        }
     }
 }
