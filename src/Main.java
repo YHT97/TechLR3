@@ -9,13 +9,30 @@ public class Main {
         public int data;
         public String str;
 
-        public Data(int[] index, int data, String str) {
-            this.index = index;
-            this.data = data;
-            this.str = str;
+        public Data() {
+            this.index = getArray();
+            this.data = (int)(Math.random()*200-100);
+            this.str = RandString();
         }
     }
 
+    static int[] getArray() {
+        int[] array = new int[3];
+        for (int i = 0; i < 3; i++) {
+            array[i] = (int) (Math.random() * 200) - 100;
+        }
+        return array;
+    }
+    public static String RandString(){
+        String alp = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        Random rand = new Random();
+        StringBuilder build = new StringBuilder();
+        for(int i=0;i<10;i++){
+            build.append(alp.charAt(rand.nextInt(alp.length())));
+        }
+        return build.toString();
+    }
+/*--------------------------------------------------------------------------------------------------*/
     static class Node<T> {
         private final int INIT_SIZE = 6;
         private Object[] class_array = new Object[INIT_SIZE];
@@ -41,7 +58,7 @@ public class Main {
             class_array[pointer++] = element;
         }
         public void add_index(T element,int index){
-            if(index> class_array.length-1) resize(class_array.length+2);
+            if(index>= class_array.length-1) resize(class_array.length+2);
             Object[] tmp = new Object[class_array.length+1];
             if (index >= 0) System.arraycopy(class_array, 0, tmp, 0, index);
             tmp[index]=element;
@@ -65,31 +82,92 @@ public class Main {
             }
         }
     }
-    static int[] getArray() {
-        int[] array = new int[3];
-        for (int i = 0; i < 3; i++) {
-            array[i] = (int) (Math.random() * 200) - 100;
-        }
-        return array;
-    }
-    public static String RandString(){
-        String alp = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        Random rand = new Random();
-        StringBuilder build = new StringBuilder();
-        for(int i=0;i<10;i++){
-            build.append(alp.charAt(rand.nextInt(alp.length())));
-        }
-        return build.toString();
-    }
+/*-----------------------------------------------------------------------------------------------------------------------*/
+
 
     public static void main(String[] args) {
+        boolean Exit =false;
         Node<Data> block = new Node<>();
-        for(int i=0;i<block.size();i++) {
 
+        Scanner scan = new Scanner(System.in);
+
+        for(int i=0;i<block.size();i++) {
             System.out.println(Arrays.toString(block.get(i).index));
             System.out.println(block.get(i).data);
             System.out.println(block.get(i).str);
             System.out.println("---------------------");
+        }
+        while(!Exit){
+            System.out.println("""
+                1 - Add new record on start position
+                2 - Add new record on end position
+                3 - Add new record on index position
+                4 - Remove the record on index position
+                5 - Changing the record on index position
+                6 - Clear all blocks
+                7 - Find the record from block types
+                8 - Output all list
+                9 - Output last record
+               10 - Exit
+                """);
+            int toggle = scan.nextInt();
+            switch (toggle){
+                case 1 -> {
+                    if(block.size()>6){
+                        System.out.println("Record limit exceeded");
+                        break;
+                    }
+                    block.add_index(new Data(),0);
+                }
+                case 2 ->{
+                    if(block.size()>6){
+                        System.out.println("Record limit exceeded");
+                        break;
+                    }
+                    block.add_index(new Data(),block.size());
+                }
+                case 3 -> {
+                    System.out.println("Enter index: ");
+                    int index = scan.nextInt();
+                    if(block.size()>6){
+                        System.out.println("Record limit exceeded");
+                        break;
+                    }
+                    block.add_index(new Data(),index);
+                }
+                case 4 ->{
+                    System.out.println("Enter index: ");
+                    int index = scan.nextInt();
+                    block.remove(index);
+                }
+                case 5 ->{
+                    System.out.println("Enter index: ");
+                    int index = scan.nextInt();
+                    block.remove(index);
+                    block.add_index(new Data(),index);
+                }
+                case 6 -> {
+                    for(int i =0;i<block.pointer;i++){
+                        block.remove(i);
+                    }
+                }
+                case 7 ->{
+
+                }
+                case 8 ->{
+                    for (int i = 0; i < block.size(); i++) {
+                        System.out.println(Arrays.toString(block.get(i).index) + " " + block.get(i).data+ " " + block.get(i).str);
+                    }
+                }
+                case 9 -> {
+
+                    if (block.pointer > 0) {
+                        System.out.println(Arrays.toString(block.get(block.pointer).index) + " " + block.get(block.pointer).data + " " + block.get(block.pointer).str);
+                    }
+                }
+                case 10 ->{Exit=true;}
+
+            }
         }
     }
 }
