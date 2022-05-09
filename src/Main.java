@@ -1,4 +1,5 @@
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
 
@@ -152,6 +153,56 @@ public class Main {
                     }
                 }
                 case 7 ->{
+                    System.out.println("""
+                            1 - find by array
+                            2 - find by number
+                            3 - fund by word
+                            Choose the type for search:""");
+                    toggle = scan.nextInt();
+                    switch (toggle){
+
+                        case 1 -> {
+                            System.out.print("Enter the array elements: ");
+                            String[] NewStrArray = new String[3];
+                            for (int j = 0; j < 3; j++) {
+                                NewStrArray[j] = scan.next();
+                            }
+                            for (int i = 0; i < block.size(); i++) {
+                                if (Arrays.toString(NewStrArray).equals(Arrays.toString(block.get(i).index)))
+                                    System.out.println("Found in " + (i + 1) + "position" + '\n' + "Record: " + Arrays.toString(block.get(i).index) + " " + block.get(i).data + " " + block.get(i).str);
+                                else {
+                                    System.out.println("Not found in " + (i + 1) + "position");
+                                }
+                            }
+                        }
+                        case 2 -> {
+                            System.out.println("Enter the number");
+                            int tmp = scan.nextInt();
+                            for(int i=0;i< block.size();i++) {
+                                if (block.get(i).data == tmp) {
+                                    System.out.println("Found in " + (i + 1) + "position" + '\n' + "Record: " + Arrays.toString(block.get(i).index) + " " + block.get(i).data + " " + block.get(i).str);
+                                }else{
+                                    System.out.println("Not found in " + (i + 1) + "position");
+                                }
+                            }
+                        }
+                        case 3 -> {
+                            System.out.print("Enter the word: ");
+                            String res = scan.next();
+                            int counter = 0;
+                            for (int i = 0; i < block.size(); i++) {
+                                if (Objects.equals(res, block.get(i).str)) {
+                                    System.out.println("Find in " + counter + " block");
+                                    System.out.println(Arrays.toString(block.get(i).index) + " " + block.get(i).data + " " + block.get(i).str);
+                                    break;
+                                }
+                                else {
+                                    System.out.println("Not found in " + (counter + 1) + " block");
+                                }
+                                counter++;
+                            }
+                        }
+                    }
 
                 }
                 case 8 ->{
